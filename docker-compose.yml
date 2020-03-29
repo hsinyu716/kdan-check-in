@@ -2,7 +2,7 @@ version: '2.4'
 
 services:
 
-  mocha-chai-knex:
+  node_app:
     build:
       context: .
       args:
@@ -17,16 +17,19 @@ services:
       - "80:3000"
       - "9229:9229"
       - "9230:9230"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/mocha_chai_tv_shows
+      - DATABASE_URL_TEST=postgresql://postgres:postgres@db:5432/mocha_chai_tv_shows_test
     volumes:
-      - ./mocha-chai-knex:/opt/node_app/app:delegated
+      - ./node_app:/opt/node_app/app:delegated
       # bind-mounting these two files in will let you add packages during development without rebuilding
       # for example, to add bower to your app while developing, just install it inside the container
       # and then nodemon will restart. Your changes will last until you "docker-compose down" and will
       # be saved on host for next build
       # NOTE: this won't work on Docker Toolbox (virtualbox) which doesn't bind-mount single files
       # docker-compose exec node npm install --save bower
-      - ./mocha-chai-knex/package.json:/opt/node_app/package.json
-      - ./mocha-chai-knex/pnpm-lock.yaml:/opt/node_app/pnpm-lock.yaml
+      - ./node_app/package.json:/opt/node_app/package.json
+      - ./node_app/pnpm-lock.yaml:/opt/node_app/pnpm-lock.yaml
       # this is a workaround to prevent host node_modules from accidently getting mounted in container
       # in case you want to use node/npm both outside container for test/lint etc. and also inside container
       # this will overwrite the default node_modules dir in container so it won't conflict with our
@@ -34,26 +37,27 @@ services:
       - notused:/opt/node_app/app/node_modules
     environment:
       - NODE_ENV=development
-    # depends_on:
-    #   mongo:
-    #     condition: service_healthy
+    depends_on:
+      db:
+        condition: service_healthy
     healthcheck:
       disable: true
 
-  # mongo:
-  #   image: mongo
-  #   ports:
-  #     - "27017:27017"
-  #   environment:
-  #     - MONGO_INITDB_ROOT_USERNAME=root
-  #     - MONGO_INITDB_ROOT_PASSWORD=example
-  #     - MONGO_INITDB_DATABASE=example-database
-  #   healthcheck:
-  #     test: "[ `echo 'db.runCommand(\"ping\").ok' | mongo localhost/example-database --quiet` ] && echo 0 || echo 1"
-  #     interval: 5s
-  #     start_period: 10s
-  #     timeout: 4s
-  #     retries: 3
+  db:
+    build:
+      context: ./node_app/db
+      dockerfile: Dockerfile
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      start_period: 10s
+      timeout: 4s
+      retries: 3
 
 volumes:
   notused:

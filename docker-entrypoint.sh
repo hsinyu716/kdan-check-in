@@ -23,7 +23,7 @@ file_env() {
 	unset "$fileVar"
 }
 
-# file_env 'MONGO_USERNAME'
-# file_env 'MONGO_PASSWORD'
+file_env 'POSTGRES_USER'
+file_env 'POSTGRES_PASSWORD'
 
 exec "$@"
