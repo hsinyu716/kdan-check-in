@@ -19,6 +19,7 @@
     "http-errors": "~1.6.3",
     "knex": "^0.20.13",
     "morgan": "~1.9.1",
+    "pg": "^7.18.2",
     "pug": "~2.0.4"
   },
   "devDependencies": {

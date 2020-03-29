@@ -32,9 +32,6 @@ HEALTHCHECK --interval=30s CMD node healthcheck.js
 WORKDIR /opt/node_app/app
 COPY ./healthcheck.js ./node_app ./
 
-COPY ./docker-entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["docker-entrypoint.sh"]
-
 # if you want to use npm start instead, then use `docker run --init in production`
 # so that signals are passed properly. Note the code in index.js is needed to catch Docker signals
 # using node here is still more graceful stopping then npm with --init afaik
