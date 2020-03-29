@@ -11,6 +11,12 @@ ARG PORT=3000
 ENV PORT $PORT
 EXPOSE $PORT 9229 9230
 
+# set database connection string
+ARG DATABASE_URL
+ARG DATABASE_URL_TEST
+ENV DATABASE_URL $DATABASE_URL
+ENV DATABASE_URL_TEST $DATABASE_URL_TEST
+
 # install global packages
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 ENV PATH /home/node/.npm-global/bin:$PATH

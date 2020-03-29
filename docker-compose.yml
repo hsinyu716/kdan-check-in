@@ -7,6 +7,8 @@ services:
       context: .
       args:
         - NODE_ENV=development
+        - DATABASE_URL=postgresql://postgres:postgres@db:5432/mocha_chai_tv_shows
+        - DATABASE_URL_TEST=postgresql://postgres:postgres@db:5432/mocha_chai_tv_shows_test
     # you can use legacy debug config or new inspect
     # NOTE: if nodemon isn't restarting on changes, you might be on Windows
     # which has trouble seeing file changes, so add -L to use legacy polling
@@ -17,10 +19,6 @@ services:
       - "80:3000"
       - "9229:9229"
       - "9230:9230"
-    environment:
-      - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/mocha_chai_tv_shows
-      - DATABASE_URL_TEST=postgresql://postgres:postgres@db:5432/mocha_chai_tv_shows_test
     volumes:
       - ./node_app:/opt/node_app/app:delegated
       # bind-mounting these two files in will let you add packages during development without rebuilding
