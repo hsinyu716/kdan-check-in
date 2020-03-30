@@ -4,4 +4,5 @@
 *Dockerfile*
 *docker-compose*
 node_modules
+.gitlab-ci.yml
 tags
