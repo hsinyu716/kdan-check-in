@@ -20,7 +20,7 @@ ENV DATABASE_URL_TEST $DATABASE_URL_TEST
 # install global packages
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
 ENV PATH /home/node/.npm-global/bin:$PATH
-RUN npm i npm@latest -g && npm i pnpm@latest -g
+RUN npm i npm@latest pnpm@latest knex@0.20.13 mocha@7.1.1 -g
 
 # install dependencies first, in a different location for easier app bind mounting for local development
 # due to default /opt permissions we have to create the dir with root and change perms
