@@ -36,5 +36,5 @@ test:
       DATABASE_TEST_URL: postgres://runner@postgres:5432/mocha_chai_tv_shows_test
       NODE_ENV: development
   script:
-    - cd /opt/node_app
+    - cd /opt/node_app/app
     - mocha
