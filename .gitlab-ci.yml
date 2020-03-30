@@ -33,7 +33,6 @@ test:
       POSTGRES_USER: runner
       POSTGRES_PASSWORD: ""
       POSTGRES_HOST_AUTH_METHOD: trust
-      DATABASE_URL: postgres://runner@postgres:5432/mocha_chai_tv_shows
       DATABASE_TEST_URL: postgres://runner@postgres:5432/mocha_chai_tv_shows_test
       NODE_ENV: development
   script:
