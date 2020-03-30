@@ -24,10 +24,25 @@ Dockerized with the help of Bret Fisher's [node-docker-good-defaults][nodedocker
 
 ## Installation
 
-You'll need [Docker and docker-compose][dc].
+1. You'll need [Docker and docker-compose][dc].
 
 ```bash
-git@github.com:sohphiabrandt/tdd-node-shows.git && cd tdd-node-shows
+$ git clone git@github.com:sohphiabrandt/tdd-node-shows.git && cd tdd-node-shows
+```
+
+2. Build Docker containers locally:
+
+```bash
+$ docker-compose up -d --build
+```
+
+3. Run migrations & seed:
+
+```bash
+$ docker-compose exec node_app pnpx knex migrate:latest --env development
+$ docker-compose exec node_app pnpx knex migrate:latest --env test
+$ docker-compose exec node_app pnpx knex seed:make shows_seed --env development
+$ docker-compose exec node_app pnpx knex seed:make shows_seed --env test
 ```
 
 ## Usage
