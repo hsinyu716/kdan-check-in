@@ -37,4 +37,4 @@ test:
       NODE_ENV: development
   script:
     - cd /opt/node_app/app
-    - mocha
+    - mocha --exit
