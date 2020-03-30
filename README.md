@@ -39,10 +39,10 @@ $ docker-compose up -d --build
 3. Run migrations & seed:
 
 ```bash
-$ docker-compose exec node_app pnpx knex migrate:latest --env development
-$ docker-compose exec node_app pnpx knex migrate:latest --env test
-$ docker-compose exec node_app pnpx knex seed:make shows_seed --env development
-$ docker-compose exec node_app pnpx knex seed:make shows_seed --env test
+$ docker-compose exec node_app knex migrate:latest --env development
+$ docker-compose exec node_app knex migrate:latest --env test
+$ docker-compose exec node_app knex seed:make shows_seed --env development
+$ docker-compose exec node_app knex seed:make shows_seed --env test
 ```
 
 ## Usage
