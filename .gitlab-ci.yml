@@ -1,0 +1,40 @@
+image: docker:stable
+
+stages:
+  - build
+  - test
+
+variables:
+  IMAGE: ${CI_REGISTRY}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}
+
+build:
+  stage: build
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+  script:
+    - echo -n $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+    - docker pull $IMAGE:$CI_COMMIT_SHORT_SHA || true
+    - docker build
+        --cache-from $IMAGE:$CI_COMMIT_SHORT_SHA
+        --tag $IMAGE:$CI_COMMIT_SHORT_SHA
+        --file ./Dockerfile-prod
+        "."
+    - docker push $IMAGE:$CI_COMMIT_SHORT_SHA
+
+test:
+  stage: test
+  image: $IMAGE:$CI_COMMIT_SHORT_SHA
+  services:
+    - postgres:12.2-alpine
+  variables:
+      POSTGRES_DB: mocha_chai_tv_shows_test
+      POSTGRES_USER: runner
+      POSTGRES_PASSWORD: ""
+      POSTGRES_HOST_AUTH_METHOD: trust
+      DATABASE_URL: postgres://runner@postgres:5432/mocha_chai_tv_shows
+      DATABASE_TEST_URL: postgres://runner@postgres:5432/mocha_chai_tv_shows_test
+      NODE_ENV: development
+  script:
+    - echo "test stage"

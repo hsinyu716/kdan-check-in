@@ -1,4 +1,20 @@
+[![MIT License][license-shield]][license-url]
+[![pipeline status][pipeline-shield]][pipeline-url]
+
 # tdd-node-shows
+
+## Table of Contents
+
+- [About](#about)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Credit](#credit)
+
+---
+
+## About
 
 **tdd-node-shows** is a an example REST API developed with Docker, Node.js, PostgreSQL, and Knex.js.
 
@@ -38,3 +54,7 @@ Please make sure to update tests as appropriate.
 [dc]: https://docs.docker.com/compose/
 [mherman]: https://mherman.org/blog/test-driven-development-with-node/
 [nodedockerdefaults]: https://github.com/BretFisher/node-docker-good-defaults
+[license-shield]: https://img.shields.io/github/license/sophiabrandt/tdd-node-shows.svg?style=flat-square
+[license-url]: https://github.com/sophiabrandt/tdd-node-shows/blob/master/LICENSE.txt
+[pipeline-shield]: https://gitlab.com/sophiabrandt/tdd-node-shows/badges/master/pipeline.svg?style=flat-square
+[pipeline-url]: https://gitlab.com/sophiabrandt/tdd-node-shows/-/commits/master
