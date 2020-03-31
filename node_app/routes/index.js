@@ -38,4 +38,19 @@ router.post('/shows', async (req, res, next) => {
   }
 })
 
+/* PUT (update) show. */
+router.put('/shows/:id', async (req, res, next) => {
+  try {
+    let showID = await queries.update(req.params.id, req.body)
+    try {
+      let show = await queries.getSingle(req.params.id)
+      res.status(200).json(show)
+    } catch (error) {
+      next(error)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router
