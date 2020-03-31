@@ -41,8 +41,8 @@ $ docker-compose up -d --build
 ```bash
 $ docker-compose exec node_app knex migrate:latest --env development
 $ docker-compose exec node_app knex migrate:latest --env test
-$ docker-compose exec node_app knex seed:make shows_seed --env development
-$ docker-compose exec node_app knex seed:make shows_seed --env test
+$ docker-compose exec node_app knex seed:run --env development
+$ docker-compose exec node_app knex seed:run --env test
 ```
 
 ## Usage
