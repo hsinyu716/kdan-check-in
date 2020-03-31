@@ -23,4 +23,19 @@ router.get('/shows/:id', async (req, res, next) => {
   }
 })
 
+/* POST (add new) show. */
+router.post('/shows', async (req, res, next) => {
+  try {
+    let showID = await queries.add(req.body)
+    try {
+      let show = await queries.getSingle(showID)
+      res.status(200).json(show)
+    } catch (error) {
+      next(error)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router
