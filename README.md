@@ -8,6 +8,7 @@
 - [About](#about)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Tests](#tests)
 - [Contributing](#contributing)
 - [License](#license)
 - [Credit](#credit)
@@ -52,6 +53,14 @@ docker-compose up -d
 ```
 
 Go to `http://localhost` to see the Express app.
+
+## Tests
+
+After you've spun up the container:
+
+```bash
+docker-compose exec node_app mocha --exit
+```
 
 ## Contributing
 
