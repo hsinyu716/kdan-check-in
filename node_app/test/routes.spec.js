@@ -9,21 +9,14 @@ const knex = require('../db/knex')
 chai.use(chaiHttp)
 
 describe('API Routes', () => {
-  beforeEach((done) => {
-    knex.migrate.rollback().then(() => {
-      knex.migrate.latest().then(() => {
-        return knex.seed.run().then(() => {
-          done()
-        })
-      })
-    })
-  })
+  beforeEach(() =>
+    knex.migrate
+      .rollback()
+      .then(() => knex.migrate.latest())
+      .then(() => knex.seed.run())
+  )
 
-  afterEach((done) => {
-    knex.migrate.rollback().then(() => {
-      done()
-    })
-  })
+  afterEach(() => knex.migrate.rollback())
 
   describe('GET /api/v1/shows', () => {
     it('should return all shows', (done) => {
