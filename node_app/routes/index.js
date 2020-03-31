@@ -46,13 +46,20 @@ router.put('/shows/:id', async (req, res, next) => {
     })
   }
   try {
-    let showID = await queries.update(req.params.id, req.body)
-    try {
-      let show = await queries.getSingle(req.params.id)
-      res.status(200).json(show)
-    } catch (error) {
-      next(error)
-    }
+    await queries.update(req.params.id, req.body)
+    let show = await queries.getSingle(req.params.id)
+    res.status(200).json(show)
+  } catch (error) {
+    next(error)
+  }
+})
+
+/* DELETE show. */
+router.delete('/shows/:id', async (req, res, next) => {
+  try {
+    let show = await queries.getSingle(req.params.id)
+    await queries.deleteItem(req.params.id)
+    res.status(200).json(show)
   } catch (error) {
     next(error)
   }
