@@ -40,6 +40,11 @@ router.post('/shows', async (req, res, next) => {
 
 /* PUT (update) show. */
 router.put('/shows/:id', async (req, res, next) => {
+  if (req.body.hasOwnProperty('id')) {
+    return res.status(422).json({
+      error: 'You cannot update the id field',
+    })
+  }
   try {
     let showID = await queries.update(req.params.id, req.body)
     try {
