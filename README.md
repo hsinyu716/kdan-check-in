@@ -28,7 +28,7 @@ Dockerized with the help of Bret Fisher's [node-docker-good-defaults][nodedocker
 1. You'll need [Docker and docker-compose][dc].
 
 ```bash
-$ git clone git@github.com:sohphiabrandt/tdd-node-shows.git && cd tdd-node-shows
+$ git clone git@github.com:sophiabrandt/tdd-node-shows.git && cd tdd-node-shows
 ```
 
 2. Build Docker containers locally:
