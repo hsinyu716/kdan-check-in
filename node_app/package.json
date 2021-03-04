@@ -13,24 +13,24 @@
     "test-wait-debuger": "cross-env NODE_ENV=test PORT=8081 mocha --no-timeouts --exit --inspect-brk=0.0.0.0:9230"
   },
   "dependencies": {
-    "chai": "^4.2.0",
+    "chai": "^4.3.3",
     "chai-http": "^4.3.0",
-    "cookie-parser": "~1.4.4",
-    "debug": "~2.6.9",
-    "express": "~4.16.1",
-    "helmet": "^3.22.0",
-    "http-errors": "~1.6.3",
-    "knex": "^0.20.13",
-    "mocha": "^7.1.1",
-    "morgan": "~1.9.1",
-    "pg": "^7.18.2",
-    "pug": "~2.0.4"
+    "cookie-parser": "~1.4.5",
+    "debug": "~4.3.1",
+    "express": "~4.17.1",
+    "helmet": "^4.4.1",
+    "http-errors": "~1.8.0",
+    "knex": "^0.95.0",
+    "mocha": "^8.3.0",
+    "morgan": "~1.10.0",
+    "pg": "^8.5.1",
+    "pug": "~3.0.2"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-prettier": "^3.1.2",
-    "nodemon": "^2.0.2",
-    "prettier": "^2.0.2"
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
   }
 }
