@@ -1,0 +1,248 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: http://localhost:3000/api/v1/checkin
+info:
+  description: This is a simple API
+  version: "1.0.0"
+  title: Check-in API
+paths:
+  /ping:
+    get:
+      tags:
+        - Test
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+                example: pong
+  /list:
+    get:
+      tags:
+        - Check-In
+      description: 列出所有員工當日資訊
+      responses:
+        '200':
+          description: All the check-in
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/CheckIn'
+                  format: json
+  /oneDay/{date}:
+    get:
+      tags:
+        - Check-In
+      description: 可以列出指定日期當天所有員工資訊
+      parameters:
+        - in: path
+          name: date
+          description: date
+          schema:
+            type: string
+            format: yyyy-mm-dd
+      responses:
+        '200':
+          description: list check-in data by specific date
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/CheckIn'
+                  format: json
+  /oneDayTopFive/{date}:
+    get:
+      tags:
+        - Check-In
+      description: 可以列出指定日期，當天前五名最早打卡上班的員工
+      parameters:
+        - in: path
+          name: date
+          description: date
+          schema:
+            type: string
+            format: yyyy-mm-dd
+      responses:
+        '200':
+          description: list top 5 employee check-in data by specific date
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/CheckIn'
+                  format: json
+  /noClockOut/{start}/{end}:
+    get:
+      tags:
+        - Check-In
+      description: 可以列出指定日期區間未打下班卡的員工清單
+      parameters:
+        - in: path
+          name: start
+          description: start date
+          schema:
+            type: string
+            format: yyyy-mm-dd
+        - in: path
+          name: end
+          description: end date
+          schema:
+            type: string
+            format: yyyy-mm-dd
+      responses:
+        '200':
+          description: list no clockOut employee data by specific date
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/CheckIn'
+                  format: json
+  /clockIn:
+    post:
+      tags:
+        - Check-In
+      description: 上班打卡
+      parameters:
+        - in: query
+          name: employeeNumber
+          description: employeeNumber
+          schema:
+            type: string
+      responses:
+        '200':
+          description: employee clockIn
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/CheckIn'
+                  format: json
+        '204':
+          description: employee already clockIng
+        '409':
+          description: clockIn time over work off
+  /clockOut:
+    put:
+      tags:
+        - Check-In
+      description: 下班打卡
+      parameters:
+        - in: query
+          name: employeeNumber
+          description: employeeNumber
+          schema:
+            type: string
+      responses:
+        '200':
+          description: employee clockOut
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/CheckIn'
+                  format: json
+        '204':
+          description: employee already clockIng
+  /remedyClockIn:
+    put:
+      tags:
+        - Check-In
+      description: 補上班卡
+      parameters:
+        - in: query
+          name: employeeNumber
+          description: employeeNumber
+          schema:
+            type: string
+        - in: query
+          name: datetime
+          description: datetime
+          schema:
+            type: string
+            format: toISOString
+      responses:
+        '200':
+          description: employee remedyClockIn
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/CheckIn'
+                  format: json
+        '204':
+          description: employee already clockIng
+        '409':
+          description: clockIn time over work off
+  /remedyClockOut:
+    put:
+      tags:
+        - Check-In
+      description: 補下班卡
+      parameters:
+        - in: query
+          name: employeeNumber
+          description: employeeNumber
+          schema:
+            type: string
+        - in: query
+          name: datetime
+          description: datetime
+          schema:
+            type: string
+            format: toISOString
+      responses:
+        '200':
+          description: employee remedyClockOut
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/CheckIn'
+                  format: json
+        '204':
+          description: employee already clockIng
+        '409':
+          description: clockIn time over today 23:59
+components:
+  schemas:
+    CheckIn:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        employeeNumber:
+          type: integer
+          format: int64
+        clockIn:
+          type: string
+          format: date-time
+        clockOut:
+          type: string
+          format: date-time
+        hour:
+          type: integer
+          format: int64
+        rest:
+          type: string

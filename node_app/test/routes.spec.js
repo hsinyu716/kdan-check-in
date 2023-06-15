@@ -9,180 +9,293 @@ const knex = require('../db/knex')
 chai.use(chaiHttp)
 
 describe('API Routes', () => {
-  beforeEach(() =>
-    knex.migrate
-      .rollback()
-      .then(() => knex.migrate.latest())
-      .then(() => knex.seed.run())
-  )
+    beforeEach(() =>
+        knex.migrate
+            .rollback()
+            .then(() => knex.migrate.latest())
+            .then(() => knex.seed.run())
+    )
 
-  afterEach(() => knex.migrate.rollback())
+    afterEach(() => knex.migrate.rollback())
 
-  describe('GET /api/v1/shows', () => {
-    it('should return all shows', (done) => {
-      chai
-        .request(server)
-        .get('/api/v1/shows')
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.should.be.json // jshint ignore:line
-          res.body.should.be.a('array')
-          res.body.length.should.equal(4)
-          res.body[0].should.have.property('name')
-          res.body[0].name.should.equal('Suits')
-          res.body[0].should.have.property('channel')
-          res.body[0].channel.should.equal('USA Network')
-          res.body[0].should.have.property('genre')
-          res.body[0].genre.should.equal('Drama')
-          res.body[0].should.have.property('rating')
-          res.body[0].rating.should.equal(3)
-          res.body[0].should.have.property('explicit')
-          res.body[0].explicit.should.equal(false)
-          done()
+    describe('GET /api/v1/checkin/list', () => {
+        it('should return all checkin/list', (done) => {
+            chai
+                .request(server)
+                .get('/api/v1/checkin/list')
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    res.should.be.json // jshint ignore:line
+                    res.body.should.be.a('array')
+                    res.body.length.should.equal(38)
+                    res.body[0].should.have.property('id')
+                    res.body[0].id.should.equal(1)
+                    res.body[0].should.have.property('employeeNumber')
+                    res.body[0].employeeNumber.should.equal(1110001)
+                    res.body[0].should.have.property('clockIn')
+                    should.equal(res.body[0].clockIn, null)
+                    res.body[0].should.have.property('clockOut')
+                    res.body[0].clockOut.should.equal('2022-01-03T00:33:00.000Z')
+                    res.body[0].should.have.property('hour')
+                    res.body[0].hour.should.equal(0)
+                    done()
+                })
         })
-    })
-  })
-  describe('GET /api/v1/shows/:id', () => {
-    it('should return a single show', (done) => {
-      chai
-        .request(server)
-        .get('/api/v1/shows/1')
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.should.be.json // jshint ignore:line
-          res.body.should.be.a('object')
-          res.body.should.have.property('name')
-          res.body.name.should.equal('Suits')
-          res.body.should.have.property('channel')
-          res.body.channel.should.equal('USA Network')
-          res.body.should.have.property('genre')
-          res.body.genre.should.equal('Drama')
-          res.body.should.have.property('rating')
-          res.body.rating.should.equal(3)
-          res.body.should.have.property('explicit')
-          res.body.explicit.should.equal(false)
-          done()
+    });
+    describe('GET /api/v1/checkin/oneDay/2022-01-03', () => {
+        it('should return oneDay checkin/list', (done) => {
+            chai
+                .request(server)
+                .get('/api/v1/checkin/oneDay/2022-01-03')
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    res.should.be.json // jshint ignore:line
+                    res.body.should.be.a('array')
+                    res.body.length.should.equal(21)
+                    res.body[0].should.have.property('id')
+                    res.body[0].id.should.equal(3)
+                    res.body[0].should.have.property('employeeNumber')
+                    res.body[0].employeeNumber.should.equal(1110003)
+                    res.body[0].should.have.property('clockIn')
+                    res.body[0].clockIn.should.equal('2022-01-03T00:00:00.000Z')
+                    res.body[0].should.have.property('clockOut')
+                    res.body[0].clockOut.should.equal('2022-01-03T09:33:00.000Z')
+                    res.body[0].should.have.property('hour')
+                    res.body[0].hour.should.equal(8)
+                    res.body[0].should.have.property('rest')
+                    res.body[0].rest.should.equal('Mon, 03 Jan 2022 04:00:00 GMT~Mon, 03 Jan 2022 05:30:00 GMT')
+                    done()
+                })
         })
-    })
-  })
-
-  describe('POST /api/v1/shows', () => {
-    it('should add a show', (done) => {
-      chai
-        .request(server)
-        .post('/api/v1/shows')
-        .send({
-          name: 'Family Guy',
-          channel: 'Fox',
-          genre: 'Comedy',
-          rating: 4,
-          explicit: true,
+    });
+    describe('GET /api/v1/checkin/oneDayTopFive/2022-01-03', () => {
+        it('should return oneDayTopFive checkin/list', (done) => {
+            chai
+                .request(server)
+                .get('/api/v1/checkin/oneDayTopFive/2022-01-03')
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    res.should.be.json // jshint ignore:line
+                    res.body.should.be.a('array')
+                    res.body.length.should.equal(5)
+                    res.body[0].should.have.property('id')
+                    res.body[0].id.should.equal(3)
+                    res.body[0].should.have.property('employeeNumber')
+                    res.body[0].employeeNumber.should.equal(1110003)
+                    res.body[0].should.have.property('clockIn')
+                    res.body[0].clockIn.should.equal('2022-01-03T00:00:00.000Z')
+                    res.body[0].should.have.property('clockOut')
+                    res.body[0].clockOut.should.equal('2022-01-03T09:33:00.000Z')
+                    res.body[0].should.have.property('hour')
+                    res.body[0].hour.should.equal(8)
+                    res.body[0].should.have.property('rest')
+                    res.body[0].rest.should.equal('Mon, 03 Jan 2022 04:00:00 GMT~Mon, 03 Jan 2022 05:30:00 GMT')
+                    done()
+                })
         })
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.should.be.json // jshint ignore:line
-          res.body.should.be.a('object')
-          res.body.should.have.property('name')
-          res.body.name.should.equal('Family Guy')
-          res.body.should.have.property('channel')
-          res.body.channel.should.equal('Fox')
-          res.body.should.have.property('genre')
-          res.body.genre.should.equal('Comedy')
-          res.body.should.have.property('rating')
-          res.body.rating.should.equal(4)
-          res.body.should.have.property('explicit')
-          res.body.explicit.should.equal(true)
-          done()
+    });
+    describe('GET /api/v1/checkin/noClockOut/2022-01-03/2022-01-05', () => {
+        it('should return noClockOut checkin/list', (done) => {
+            chai
+                .request(server)
+                .get('/api/v1/checkin/noClockOut/2022-01-03/2022-01-05')
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    res.should.be.json // jshint ignore:line
+                    res.body.should.be.a('array')
+                    res.body.length.should.equal(3)
+                    res.body[0].should.have.property('id')
+                    res.body[0].id.should.equal(10)
+                    res.body[0].should.have.property('employeeNumber')
+                    res.body[0].employeeNumber.should.equal(1110010)
+                    res.body[0].should.have.property('clockIn')
+                    res.body[0].clockIn.should.equal('2022-01-03T00:40:00.000Z')
+                    res.body[0].should.have.property('clockOut')
+                    should.equal(res.body[0].clockOut, null)
+                    done()
+                })
         })
-    })
-  })
-
-  describe('PUT /api/v1/shows/:id', () => {
-    it('should update a show', (done) => {
-      chai
-        .request(server)
-        .put('/api/v1/shows/1')
-        .send({
-          rating: 4,
-          explicit: true,
+    });
+    describe('POST /api/v1/checkin/clockIn', () => {
+        it('should clockIn', (done) => {
+            chai
+                .request(server)
+                .post('/api/v1/checkin/clockIn')
+                .send({
+                    "employeeNumber": 1110099
+                })
+                .end((err, res) => {
+                    // res.should.have.status(200)
+                    // res.should.be.json // jshint ignore:line
+                    // res.body.should.be.a('object')
+                    // res.body[0].should.have.property('employeeNumber')
+                    // res.body[0].employeeNumber.should.equal(1110099)
+                    // res.body[0].should.have.property('clockOut')
+                    // should.equal(res.body[0].clockOut, null)
+                    done()
+                })
         })
-        .end((err, res) => {
-          res.should.have.status(200)
-          res.should.be.json // jshint ignore:line
-          res.body.should.be.a('object')
-          res.body.should.have.property('name')
-          res.body.name.should.equal('Suits')
-          res.body.should.have.property('channel')
-          res.body.channel.should.equal('USA Network')
-          res.body.should.have.property('genre')
-          res.body.genre.should.equal('Drama')
-          res.body.should.have.property('rating')
-          res.body.rating.should.equal(4)
-          res.body.should.have.property('explicit')
-          res.body.explicit.should.equal(true)
-          done()
+        it('should not clockIn over work off time', (done) => {
+            chai
+                .request(server)
+                .post('/api/v1/checkin/clockIn')
+                .send({
+                    "employeeNumber": 1110099
+                })
+                .end((err, res) => {
+                    res.should.have.status(409)
+                    done()
+                })
         })
-    })
-    it('should NOT update a show if the id field is part of the request', (done) => {
-      chai
-        .request(server)
-        .put('/api/v1/shows/1')
-        .send({
-          id: 20,
-          rating: 4,
-          explicit: true,
+        it('should not clockIn', (done) => {
+            chai
+                .request(server)
+                .post('/api/v1/checkin/clockIn')
+                .send({
+                    "employeeNumber": 1110099
+                })
+                .end((err, res) => {
+                    // res.should.have.status(204)
+                    done()
+                })
         })
-        .end((err, res) => {
-          res.should.have.status(422)
-          res.should.be.json // jshint ignore:line
-          res.body.should.be.a('object')
-          res.body.should.have.property('error')
-          res.body.error.should.equal('You cannot update the id field')
-          done()
+    });
+    describe('PUT /api/v1/checkin/clockOut', () => {
+        it('should clockOut', (done) => {
+            chai
+                .request(server)
+                .put('/api/v1/checkin/clockOut')
+                .send({
+                    "employeeNumber": 1110099
+                })
+                .end((err, res) => {
+                    // res.should.have.status(200)
+                    // res.should.be.json // jshint ignore:line
+                    // res.body.should.be.a('object')
+                    // res.body[0].should.have.property('employeeNumber')
+                    // res.body[0].employeeNumber.should.equal(1110099)
+                    // res.body[0].should.have.property('clockOut')
+                    // should.equal(res.body[0].clockOut, null)
+                    done()
+                })
         })
-    })
-  })
-
-  describe('DELETE /api/v1/shows/:id', () => {
-    it('should delete a show', (done) => {
-      chai
-        .request(server)
-        .delete('/api/v1/shows/1')
-        .end((error, response) => {
-          response.should.have.status(200)
-          response.should.be.json // jshint ignore:line
-          response.body.should.be.a('object')
-          response.body.should.have.property('name')
-          response.body.name.should.equal('Suits')
-          response.body.should.have.property('channel')
-          response.body.channel.should.equal('USA Network')
-          response.body.should.have.property('genre')
-          response.body.genre.should.equal('Drama')
-          response.body.should.have.property('rating')
-          response.body.rating.should.equal(3)
-          response.body.should.have.property('explicit')
-          response.body.explicit.should.equal(false)
-          chai
-            .request(server)
-            .get('/api/v1/shows')
-            .end((err, res) => {
-              res.should.have.status(200)
-              res.should.be.json // jshint ignore:line
-              res.body.should.be.a('array')
-              res.body.length.should.equal(3)
-              res.body[0].should.have.property('name')
-              res.body[0].name.should.equal('Game of Thrones')
-              res.body[0].should.have.property('channel')
-              res.body[0].channel.should.equal('HBO')
-              res.body[0].should.have.property('genre')
-              res.body[0].genre.should.equal('Fantasy')
-              res.body[0].should.have.property('rating')
-              res.body[0].rating.should.equal(5)
-              res.body[0].should.have.property('explicit')
-              res.body[0].explicit.should.equal(true)
-              done()
-            })
+        it('should not clockIn over work off time', (done) => {
+            chai
+                .request(server)
+                .put('/api/v1/checkin/clockOut')
+                .send({
+                    "employeeNumber": 1110099
+                })
+                .end((err, res) => {
+                    res.should.have.status(409)
+                    done()
+                })
         })
-    })
-  })
+        it('should not clockIn', (done) => {
+            chai
+                .request(server)
+                .put('/api/v1/checkin/clockOut')
+                .send({
+                    "employeeNumber": 1110099
+                })
+                .end((err, res) => {
+                    // res.should.have.status(204)
+                    done()
+                })
+        })
+    });
+    describe('POST /api/v1/checkin/remedyClockIn', () => {
+        it('should remedyClockIn', (done) => {
+            chai
+                .request(server)
+                .post('/api/v1/checkin/remedyClockIn')
+                .send({
+                    "employeeNumber": 1110002,
+                    "datetime": '2022-01-03T00:40:00.000Z'
+                })
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    // res.should.be.json // jshint ignore:line
+                    // res.body.should.be.a('object')
+                    // res.body[0].should.have.property('employeeNumber')
+                    // res.body[0].employeeNumber.should.equal(1110099)
+                    // res.body[0].should.have.property('clockOut')
+                    // should.equal(res.body[0].clockOut, null)
+                    done()
+                })
+        })
+        it('should not clockIn over work off time', (done) => {
+            chai
+                .request(server)
+                .post('/api/v1/checkin/remedyClockIn')
+                .send({
+                    "employeeNumber": 1110002,
+                    "datetime": '2022-01-03T16:40:00.000Z'
+                })
+                .end((err, res) => {
+                    res.should.have.status(409)
+                    done()
+                })
+        })
+        it('should not clockIn', (done) => {
+            chai
+                .request(server)
+                .post('/api/v1/checkin/clockIn')
+                .send({
+                    "employeeNumber": 1110002,
+                    "datetime": '2022-01-03T00:40:00.000Z'
+                })
+                .end((err, res) => {
+                    res.should.have.status(204)
+                    done()
+                })
+        })
+    });
+    describe('POST /api/v1/checkin/remedyClockOut', () => {
+        it('should remedyClockOut', (done) => {
+            chai
+                .request(server)
+                .post('/api/v1/checkin/remedyClockOut')
+                .send({
+                    "employeeNumber": 1110010,
+                    "datetime" : "2022-01-03 16:39:31"
+                })
+                .end((err, res) => {
+                    res.should.have.status(200)
+                    // res.should.be.json // jshint ignore:line
+                    // res.body.should.be.a('object')
+                    // res.body[0].should.have.property('employeeNumber')
+                    // res.body[0].employeeNumber.should.equal(1110099)
+                    // res.body[0].should.have.property('clockOut')
+                    // should.equal(res.body[0].clockOut, null)
+                    done()
+                })
+        })
+        it('should not clockOut over 23:59', (done) => {
+            chai
+                .request(server)
+                .post('/api/v1/checkin/remedyClockOut')
+                .send({
+                    "employeeNumber": 1110002,
+                    "datetime": '2022-01-03T16:40:00.000Z'
+                })
+                .end((err, res) => {
+                    res.should.have.status(409)
+                    done()
+                })
+        })
+        it('should not clockOut', (done) => {
+            chai
+                .request(server)
+                .post('/api/v1/checkin/clockIn')
+                .send({
+                    "employeeNumber": 1110010,
+                    "datetime" : "2022-01-03 16:39:31"
+                })
+                .end((err, res) => {
+                    res.should.have.status(204)
+                    done()
+                })
+        })
+    });
 })

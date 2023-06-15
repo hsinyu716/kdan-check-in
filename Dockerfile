@@ -1,5 +1,5 @@
 # pull base image
-FROM node:12.16.1-buster-slim
+FROM node:16.20.0-slim
 
 # set our node environment, either development or production
 # defaults to production, compose overrides this to development on build and run
@@ -28,7 +28,7 @@ RUN mkdir /opt/node_app && chown node:node /opt/node_app
 WORKDIR /opt/node_app
 ENV PATH /opt/node_app/.bin:$PATH
 USER node
-COPY ./node_app/package.json ./node_app/pnpm-lock.yaml ./
+COPY ./node_app/package.json ./node_app/pnpm-lock.yaml .env ./
 RUN pnpm install
 
 # check every 30s to ensure this service returns HTTP 200
