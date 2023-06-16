@@ -33,7 +33,7 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/CheckIn'
+                    - $ref: '#/components/schemas/CheckInList'
                   format: json
   /oneDay/{date}:
     get:
@@ -56,7 +56,7 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/CheckIn'
+                    - $ref: '#/components/schemas/CheckInList'
                   format: json
   /oneDayTopFive/{date}:
     get:
@@ -79,7 +79,7 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/CheckIn'
+                    - $ref: '#/components/schemas/CheckInList'
                   format: json
   /noClockOut/{start}/{end}:
     get:
@@ -108,7 +108,7 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/CheckIn'
+                    - $ref: '#/components/schemas/CheckInItem'
                   format: json
   /clockIn:
     post:
@@ -130,7 +130,7 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/CheckIn'
+                    - $ref: '#/components/schemas/CheckInItem'
                   format: json
         '204':
           description: employee already clockIng
@@ -156,7 +156,7 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/CheckIn'
+                    - $ref: '#/components/schemas/CheckInItem'
                   format: json
         '204':
           description: employee already clockIng
@@ -186,7 +186,7 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/CheckIn'
+                    - $ref: '#/components/schemas/CheckInItem'
                   format: json
         '204':
           description: employee already clockIng
@@ -218,7 +218,7 @@ paths:
                 type: array
                 items:
                   allOf:
-                    - $ref: '#/components/schemas/CheckIn'
+                    - $ref: '#/components/schemas/CheckInItem'
                   format: json
         '204':
           description: employee already clockIng
@@ -226,7 +226,7 @@ paths:
           description: clockIn time over today 23:59
 components:
   schemas:
-    CheckIn:
+    CheckInList:
       type: object
       properties:
         id:
@@ -246,3 +246,18 @@ components:
           format: int64
         rest:
           type: string
+    CheckInItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        employeeNumber:
+          type: integer
+          format: int64
+        clockIn:
+          type: string
+          format: date-time
+        clockOut:
+          type: string
+          format: date-time
