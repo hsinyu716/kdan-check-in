@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => res.redirect('/api/v1/checkin'));
+app.get('/', (req, res) => res.redirect('/api/v1/checkin/list'));
 app.use('/api/v1/checkin', indexRouter);
 
 // catch 404 and forward to error handler
