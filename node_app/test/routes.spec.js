@@ -204,11 +204,11 @@ describe('API Routes', () => {
                 })
         })
     });
-    describe('POST /api/v1/checkin/remedyClockIn', () => {
+    describe('PUT /api/v1/checkin/remedyClockIn', () => {
         it('should remedyClockIn', (done) => {
             chai
                 .request(server)
-                .post('/api/v1/checkin/remedyClockIn')
+                .put('/api/v1/checkin/remedyClockIn')
                 .send({
                     "employeeNumber": 1110002,
                     "datetime": '2022-01-03T00:40:00.000Z'
@@ -227,7 +227,7 @@ describe('API Routes', () => {
         it('should not clockIn over work off time', (done) => {
             chai
                 .request(server)
-                .post('/api/v1/checkin/remedyClockIn')
+                .put('/api/v1/checkin/remedyClockIn')
                 .send({
                     "employeeNumber": 1110002,
                     "datetime": '2022-01-03T16:40:00.000Z'
@@ -240,7 +240,7 @@ describe('API Routes', () => {
         it('should not clockIn', (done) => {
             chai
                 .request(server)
-                .post('/api/v1/checkin/clockIn')
+                .put('/api/v1/checkin/remedyClockIn')
                 .send({
                     "employeeNumber": 1110002,
                     "datetime": '2022-01-03T00:40:00.000Z'
@@ -251,11 +251,11 @@ describe('API Routes', () => {
                 })
         })
     });
-    describe('POST /api/v1/checkin/remedyClockOut', () => {
+    describe('PUT /api/v1/checkin/remedyClockOut', () => {
         it('should remedyClockOut', (done) => {
             chai
                 .request(server)
-                .post('/api/v1/checkin/remedyClockOut')
+                .put('/api/v1/checkin/remedyClockOut')
                 .send({
                     "employeeNumber": 1110010,
                     "datetime" : "2022-01-03 16:39:31"
@@ -274,7 +274,7 @@ describe('API Routes', () => {
         it('should not clockOut over 23:59', (done) => {
             chai
                 .request(server)
-                .post('/api/v1/checkin/remedyClockOut')
+                .put('/api/v1/checkin/remedyClockOut')
                 .send({
                     "employeeNumber": 1110002,
                     "datetime": '2022-01-03T16:40:00.000Z'
@@ -287,7 +287,7 @@ describe('API Routes', () => {
         it('should not clockOut', (done) => {
             chai
                 .request(server)
-                .post('/api/v1/checkin/clockIn')
+                .put('/api/v1/checkin/remedyClockOut')
                 .send({
                     "employeeNumber": 1110010,
                     "datetime" : "2022-01-03 16:39:31"
