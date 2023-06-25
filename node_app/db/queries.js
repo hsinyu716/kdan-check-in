@@ -12,21 +12,32 @@ function getAll() {
 
 function getOneDay(start, end, limit = 0) {
     let result = db().select().whereBetween("clockIn", [start, end]);
-    if (limit > 0){
+    if (limit > 0) {
         result = result.orderBy([
-            { column: 'clockIn', order: 'asc' },
-            { column: 'id', order: 'asc' }
+            {column: 'clockIn', order: 'asc'},
+            {column: 'id', order: 'asc'}
         ]).limit(limit).offset(0);
     }
     return result;
 }
 
 function checkClockIn(start, end, employeeNumber) {
-    return db().select().whereBetween("clockIn", [start, end]).andWhere("employeeNumber", employeeNumber);
+    return db().select().whereBetween("clockIn", [start, end])
+        .andWhere("clockOut", null)
+        .andWhere("employeeNumber", employeeNumber).orderBy([
+            {column: 'id', order: 'desc'}
+        ]);
 }
 
 function checkClockOut(start, end, employeeNumber) {
-    return db().select().whereBetween("clockOut", [start, end]).andWhere("employeeNumber", employeeNumber);
+    return db().select().whereBetween("clockOut", [start, end])
+        .andWhere("employeeNumber", employeeNumber);
+}
+
+function checkRemedyClockIn(start, end, employeeNumber) {
+    return db().select().whereBetween("clockOut", [start, end])
+        .andWhere("clockIn", null)
+        .andWhere("employeeNumber", employeeNumber);
 }
 
 function getSingle(showID) {
@@ -52,11 +63,11 @@ function updateClockOut(showID, clockOut) {
     return db().where("id", showID).update(clockOut).then();
 }
 
-function remedyClockIn(showID, clockIn){
+function remedyClockIn(showID, clockIn) {
     return db().where("id", showID).update(clockIn).then();
 }
 
-function remedyClockOut(showID, clockOut){
+function remedyClockOut(showID, clockOut) {
     return db().where("id", showID).update(clockOut).then();
 }
 
@@ -69,6 +80,7 @@ module.exports = {
     addClockOut: addClockOut,
     checkClockIn: checkClockIn,
     checkClockOut: checkClockOut,
+    checkRemedyClockIn: checkRemedyClockIn,
     updateClockOut: updateClockOut,
     remedyClockIn: remedyClockIn,
     remedyClockOut: remedyClockOut,

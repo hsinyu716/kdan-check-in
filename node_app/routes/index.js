@@ -64,7 +64,8 @@ router.post('/clockIn', async (req, res, next) => {
         }
         let {today, endDate} = util.handleDate();
         let checkin = await queries.checkClockIn(today, endDate, req.body.employeeNumber);
-        if (checkin.length === 0) {
+        let checkout = await queries.checkClockOut(today, endDate, req.body.employeeNumber);
+        if ((checkin.length + checkout.length) % 2 === 0) {
             let showID = await queries.addClockIn(req.body);
             let show = await queries.getSingle(showID);
             res.status(200).json(show);
@@ -85,7 +86,7 @@ router.put('/clockOut', async (req, res, next) => {
             let showID = await queries.addClockOut(req.body);
             let show = await queries.getSingle(showID);
             res.status(200).json(show);
-        } else if (checkIn.length === 1 && checkOut.length === 0) {
+        } else if (checkIn.length - checkOut.length === 1) {
             queries.updateClockOut(checkIn[0].id, req.body);
             let show = await queries.getSingle(checkIn[0].id);
             res.status(200).json(show);
@@ -106,7 +107,7 @@ router.put('/remedyClockIn', async (req, res, next) => {
             return;
         }
         let end = off.set('hour', 16).set('minute', 0);
-        let checkOut = await queries.checkClockOut(specific, end, req.body.employeeNumber);
+        let checkOut = await queries.checkRemedyClockIn(specific, end, req.body.employeeNumber);
         if (checkOut.length === 1) {
             req.body.clockIn = specific;
             queries.remedyClockIn(checkOut[0].id, {
@@ -133,7 +134,7 @@ router.put('/remedyClockOut', async (req, res, next) => {
         }
         let start = off.subtract(1, 'day').set('hour', 16).set('minute', 0);
         let checkin = await queries.checkClockIn(start, specific, req.body.employeeNumber);
-        if (checkin.length === 1) {
+        if (checkin.length > 0) {
             queries.remedyClockOut(checkin[0].id, {
                 "employeeNumber": req.body.employeeNumber,
                 "clockOut": specific
